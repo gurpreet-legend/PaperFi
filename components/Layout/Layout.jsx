@@ -6,11 +6,9 @@ const Layout = ({ children }) => {
 
     const [theme, setTheme] = useState('light')
     return (
-        <div>
-            <div>
-                <Navbar />
-                {children}
-            </div>
+        <div className='dark:bg-slate-900 h-screen'>
+            <Navbar />
+            {children}
         </div>
     )
 }

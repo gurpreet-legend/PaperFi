@@ -6,7 +6,7 @@ export default function Home() {
       <Head>
         <title>PaperFi</title>
         <meta name="description" content="One stop solution to get your papers funded" />
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
     </div>
   )
