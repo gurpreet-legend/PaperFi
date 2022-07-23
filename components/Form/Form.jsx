@@ -4,10 +4,10 @@ import RightFormWrapper from './RightFormWrapper'
 
 const Form = () => {
     return (
-        <div className='grid grid-cols-2'>
+        <form className='grid grid-cols-2'>
             <LeftFormWrapper />
             <RightFormWrapper />
-        </div>
+        </form>
     )
 }
 
