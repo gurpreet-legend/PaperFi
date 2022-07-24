@@ -7,22 +7,23 @@ import { IpfsContext } from '../../contexts/IpfsContext'
 import { toast } from 'react-toastify'
 import { ServicesContext } from '../../contexts/Services'
 import { ethers } from 'ethers'
+import PublishedModal from '../Modals/PublishedModal'
 
 
 const RightFormWrapper = () => {
-
-    const ipfs = create("https://ipfs.infura.io:5001/api/v0")
 
     const { inputHandler, description, author, title, requiredAmount, category, thumbnail, pdfFile } = useContext(FormContext)
     const { thumbnailURL, pdfFileURL } = useContext(IpfsContext)
     const { Services } = useContext(ServicesContext)
 
-    const [uploadLoading, setUploadLoading] = useState(false)
-    const [uploaded, setUploaded] = useState(false)
+    const [publishLoading, setPublishLoading] = useState(false)
+    const [published, setPublished] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const [address, setAddress] = useState("")
 
     const formSubmitHandler = async (e) => {
         e.preventDefault()
-        setUploadLoading(true)
+        setPublishLoading(true)
 
         if (
             title === "" ||
@@ -34,7 +35,7 @@ const RightFormWrapper = () => {
             pdfFile === null
         ) {
             toast.warn("Empty string not allowed")
-            setUploadLoading(false)
+            setPublishLoading(false)
             return
         } else {
 
@@ -42,16 +43,7 @@ const RightFormWrapper = () => {
             try {
                 // let fundAmount = ethers.utils.parseEther(requiredAmount);
                 let intRequiredAmount = parseInt(requiredAmount)
-                console.log({
-                    title,
-                    author,
-                    intRequiredAmount,
-                    thumbnailURL,
-                    pdfFileURL,
-                    category,
-                    description
-                })
-                Services.publishPaper(
+                let publishedAddress = await Services.publishPaper(
                     title,
                     author,
                     intRequiredAmount,
@@ -60,21 +52,30 @@ const RightFormWrapper = () => {
                     category,
                     description
                 )
+                console.log(publishedAddress)
+                setAddress(publishedAddress)
             }
             catch (err) {
                 console.log(err)
                 toast.error("Error while publishing paper")
-                setUploadLoading(false)
+                setPublishLoading(false)
                 return
             }
         }
-        setUploadLoading(false)
-        setUploaded(true)
-        toast.success("Files uploaded successfully")
+        setPublishLoading(false)
+        setPublished(true)
+        toast.success("Files published successfully")
+        setOpenModal(true)
     }
 
     return (
         <div className='flex flex-col space-y-6 p-6'>
+            {
+                setPublishLoading === true ? "" :
+                    setPublished === false ? "" :
+                        address === "" ? "" :
+                            openModal ? <PublishedModal setOpenModal={setOpenModal} address={address} /> : ""
+            }
             <div>
                 <label htmlFor="title" className="block mb-2 placeholder:font-mono text-lg font-medium text-gray-900 dark:text-blue-300">Title</label>
                 <input onChange={inputHandler} name="title" type="text" id="title" placeholder='Bitcoin: A Peer-to-Peer Electron...' className="block outline-none p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -108,12 +109,12 @@ const RightFormWrapper = () => {
                     Once your NFT is minted on the blockchain, you will not be able to edit or update any of its information.
                 </p>
                 <p className='text-sm text-gray-600 dark:text-blue-500'>
-                    You agree that any information uploaded to the PaperiFi will not contain material subject to copyright or other proprietary rights, unless you have necessary permission or are otherwise legally entitled to post the material.
+                    You agree that any information published to the PaperiFi will not contain material subject to copyright or other proprietary rights, unless you have necessary permission or are otherwise legally entitled to post the material.
                 </p>
             </div>
             <div>
                 {
-                    uploadLoading === true ?
+                    publishLoading === true ?
                         <button type="button" className="flex text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">
                             <TailSpin
                                 height="10"
@@ -122,7 +123,7 @@ const RightFormWrapper = () => {
                                 ariaLabel='loading'
                             />
                         </button> :
-                        uploaded === true ?
+                        published === true ?
                             <button type="button" className="flex cursor-no-drop text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">
                                 Paper Published
                             </button> :

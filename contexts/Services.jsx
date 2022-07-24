@@ -3,6 +3,7 @@ import React, { Children, useEffect } from 'react'
 import PaperfiFactory from '../artifacts/contracts/Paperfi.sol/PaperfiFactory.json'
 
 import { createContext, useState } from 'react'
+import Constants from '../utils/Constants'
 
 export const ServicesContext = createContext()
 
@@ -27,11 +28,11 @@ const ServicesContextProvider = ({ children }) => {
   const Services = {
     publishPaper: async (_title, _author, _requiredAmount, _imageURI, _pdfURI, _category, _desc) => {
       try {
-        const provider = new ethers.providers.Web3Provider(window.ethereum)
-        const signer = provider.getSigner()
-        const contractWithSigner = contract.PaperFi.connect(signer)
-        console.log(signer)
-        const publishedPaper = await contractWithSigner.publishPaper(
+        // const provider = new ethers.providers.Web3Provider(window.ethereum)
+        // const signer = provider.getSigner()
+        // const contractWithSigner = contract.PaperFi.connect(signer)
+        // console.log(signer)
+        const publishedPaper = await contract.PaperFi.publishPaper(
           _title,
           _author,
           _requiredAmount,
@@ -39,15 +40,13 @@ const ServicesContextProvider = ({ children }) => {
           _pdfURI,
           _category,
           desc, {
-          gasLimit: 100000
+          gasLimit: Constants.GASLIMIT
         }
         )
 
-        console.log("HERE!!!")
-
         await publishedPaper.wait()
-
-        return publishedPaper.to()
+        // console.log(publishedPaper.to)
+        return publishedPaper.to
       } catch (err) {
         console.log("Error in publishing the paper", err)
       }

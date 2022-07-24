@@ -5,6 +5,7 @@ import { TailSpin } from 'react-loader-spinner'
 import { create } from 'ipfs-http-client'
 import { IpfsContext } from '../../contexts/IpfsContext'
 import { toast } from 'react-toastify'
+import PublishedModal from '../Modals/PublishedModal'
 
 const LeftFormWrapper = () => {
 
