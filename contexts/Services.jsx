@@ -28,10 +28,6 @@ const ServicesContextProvider = ({ children }) => {
   const Services = {
     publishPaper: async (_title, _author, _requiredAmount, _imageURI, _pdfURI, _category, _desc) => {
       try {
-        // const provider = new ethers.providers.Web3Provider(window.ethereum)
-        // const signer = provider.getSigner()
-        // const contractWithSigner = contract.PaperFi.connect(signer)
-        // console.log(signer)
         const publishedPaper = await contract.PaperFi.publishPaper(
           _title,
           _author,
@@ -45,10 +41,33 @@ const ServicesContextProvider = ({ children }) => {
         )
 
         await publishedPaper.wait()
-        // console.log(publishedPaper.to)
         return publishedPaper.to
       } catch (err) {
         console.log("Error in publishing the paper", err)
+      }
+    },
+
+    getAllPublishedPapers: async () => {
+      try {
+        console.log(contract.PaperFi)
+        const publishedPapers = await contract.PaperFi.filters.paperPublished()
+        let events = await contract.PaperFi.queryFilter(publishedPapers)
+        let orderedEvents = events.reverse()
+        console.log(orderedEvents)
+        // let AllPublishedPapers = orderedEvents.map((e)=> {
+        //   title: e.args.title,
+        //   author,
+        //   requiredAmount,
+        //   owner,
+        //   ,
+        //   _imageURI,
+        //   _pdfURI,
+        //   block.timestamp,
+        //   _category
+        // })
+      }
+      catch (err) {
+        console.log("Error fetching published papers", err)
       }
     }
   }
