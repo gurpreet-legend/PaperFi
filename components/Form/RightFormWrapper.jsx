@@ -1,10 +1,77 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FormContext } from '../../contexts/FormContext'
 import { useContext } from 'react'
+import { TailSpin } from 'react-loader-spinner'
+import { create } from 'ipfs-http-client'
+import { IpfsContext } from '../../contexts/IpfsContext'
+import { toast } from 'react-toastify'
+import { ServicesContext } from '../../contexts/Services'
+import { ethers } from 'ethers'
+
 
 const RightFormWrapper = () => {
 
-    const { inputHandler } = useContext(FormContext)
+    const ipfs = create("https://ipfs.infura.io:5001/api/v0")
+
+    const { inputHandler, description, author, title, requiredAmount, category, thumbnail, pdfFile } = useContext(FormContext)
+    const { thumbnailURL, pdfFileURL } = useContext(IpfsContext)
+    const { Services } = useContext(ServicesContext)
+
+    const [uploadLoading, setUploadLoading] = useState(false)
+    const [uploaded, setUploaded] = useState(false)
+
+    const formSubmitHandler = async (e) => {
+        e.preventDefault()
+        setUploadLoading(true)
+
+        if (
+            title === "" ||
+            author === "" ||
+            description === "" ||
+            requiredAmount === "" ||
+            category === "" ||
+            thumbnail === null ||
+            pdfFile === null
+        ) {
+            toast.warn("Empty string not allowed")
+            setUploadLoading(false)
+            return
+        } else {
+
+            //publish paper
+            try {
+                // let fundAmount = ethers.utils.parseEther(requiredAmount);
+                let intRequiredAmount = parseInt(requiredAmount)
+                console.log({
+                    title,
+                    author,
+                    intRequiredAmount,
+                    thumbnailURL,
+                    pdfFileURL,
+                    category,
+                    description
+                })
+                Services.publishPaper(
+                    title,
+                    author,
+                    intRequiredAmount,
+                    thumbnailURL,
+                    pdfFileURL,
+                    category,
+                    description
+                )
+            }
+            catch (err) {
+                console.log(err)
+                toast.error("Error while publishing paper")
+                setUploadLoading(false)
+                return
+            }
+        }
+        setUploadLoading(false)
+        setUploaded(true)
+        toast.success("Files uploaded successfully")
+    }
 
     return (
         <div className='flex flex-col space-y-6 p-6'>
@@ -32,9 +99,9 @@ const RightFormWrapper = () => {
                     <option value="Other">Other</option>
                 </select>
             </div>
-            <div className='flex flex-grow'>
-                <span className='text-xl text-blue-700 dark:text-blue-500 font-semibold grow'>Funding Amount</span>
-                <input onChange={inputHandler} name="requiredAmount" type="number" placeholder='0 ETH' className='bg-blue-400 outline-none focus:ring-1 focus:ring-blue-700 p-2 text-black placeholder:text-blue-700 rounded-md text-center' />
+            <div className='flex'>
+                <span className='text-xl text-blue-700 dark:text-blue-500 font-semibold grow h-10'>Funding Amount</span>
+                <input onChange={inputHandler} name="requiredAmount" type="number" placeholder='0 ETH' className='bg-blue-400 outline-none focus:ring-1 focus:ring-blue-700 p-2 text-black placeholder:text-blue-700 rounded-md text-center h-10' />
             </div>
             <div>
                 <p className='text-sm text-gray-600 dark:text-blue-500 mb-3'>
@@ -45,9 +112,25 @@ const RightFormWrapper = () => {
                 </p>
             </div>
             <div>
-                <button type="button" className="flex text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">
-                    <span className='text-white font-bold text-lg'>Publish</span>
-                </button>
+                {
+                    uploadLoading === true ?
+                        <button type="button" className="flex text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">
+                            <TailSpin
+                                height="10"
+                                width="10"
+                                color='white'
+                                ariaLabel='loading'
+                            />
+                        </button> :
+                        uploaded === true ?
+                            <button type="button" className="flex cursor-no-drop text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">
+                                Paper Published
+                            </button> :
+
+                            <button onClick={formSubmitHandler} type="button" className="flex text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">
+                                <span className='text-white font-bold text-lg'>Publish</span>
+                            </button>
+                }
             </div>
 
         </div>

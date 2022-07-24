@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "E:\\College Work\\Summer Project\\main\\paperfi\\contracts\\Paperfi.sol": {
-      "lastModificationDate": 1658333204065,
-      "contentHash": "d086ed40f5c8892933e0919aa1aa8bd2",
+      "lastModificationDate": 1658666518257,
+      "contentHash": "753fc67210ad5bb7c45e3adb61a7e6ff",
       "sourceName": "contracts/Paperfi.sol",
       "solcConfig": {
         "version": "0.8.9",

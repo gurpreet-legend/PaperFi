@@ -7,25 +7,31 @@ contract PaperfiFactory {
 
     event paperPublished(
         string title,
+        string author,
         uint256 requiredAmount,
         address indexed owner,
         address paperAddress,
         string imageURI,
+        string pdfURI,
         uint256 indexed timestamp,
         string indexed category
     );
 
     function publishPaper(
         string memory _title,
+        string memory _author,
         uint256 _requiredAmount,
         string memory _imageURI,
+        string memory _pdfURI,
         string memory _category,
         string memory _desc
     ) public {
         Paperfi newPaper = new Paperfi(
             _title,
+            _author,
             _requiredAmount,
             _imageURI,
+            _pdfURI,
             _desc
         );
 
@@ -33,10 +39,12 @@ contract PaperfiFactory {
 
         emit paperPublished(
             _title,
+            _author,
             _requiredAmount,
             msg.sender,
             address(newPaper),
             _imageURI,
+            _pdfURI,
             block.timestamp,
             _category
         );
@@ -46,8 +54,10 @@ contract PaperfiFactory {
 contract Paperfi {
     //states
     string public title;
+    string public author;
     uint256 public requiredAmount;
     string public image;
+    string public pdf;
     string public description;
     address payable public owner;
     uint256 public recievedAmount;
@@ -62,13 +72,17 @@ contract Paperfi {
     //constructor
     constructor(
         string memory _title,
+        string memory _author,
         uint256 _requiredAmount,
         string memory _imageURI,
+        string memory _pdfURI,
         string memory _desc
     ) {
         title = _title;
+        author = _author;
         requiredAmount = _requiredAmount;
         image = _imageURI;
+        pdf = _pdfURI;
         description = _desc;
         owner = payable(msg.sender);
     }
