@@ -8,7 +8,7 @@ const PublishedModal = ({ setOpenModal, address }) => {
 
     return (
         <div className='flex justify-center items-center h-screen w-screen absolute top-0 left-0'>
-            <div className='z-40 h-screen w-screen absolute top-0 left-0 bg-black opacity-25'></div>
+            <div className='z-40 h-full w-screen absolute top-0 left-0 bg-black opacity-25'></div>
             <div id="small-modal" tabIndex="-1" className="overflow-y-auto overflow-x-hidden z-50 h-modal">
                 <div className="relative p-4 w-full max-w-md h-full md:h-auto">
                     {/* <!-- Modal content --> */}

@@ -14,7 +14,7 @@ contract PaperfiFactory {
         string imageURI,
         string pdfURI,
         uint256 indexed timestamp,
-        string indexed category
+        string category
     );
 
     function publishPaper(
@@ -46,7 +46,7 @@ contract PaperfiFactory {
             _imageURI,
             _pdfURI,
             block.timestamp,
-            _category
+            _category,
         );
     }
 }

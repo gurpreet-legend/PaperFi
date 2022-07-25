@@ -19,7 +19,7 @@ module.exports = {
     hardhat: {},
     ganache: {
       url: process.env.NEXT_PUBLIC_RPC_URL,
-      accouunt: [privateKey]
+      account: [privateKey]
     }
   }
 };

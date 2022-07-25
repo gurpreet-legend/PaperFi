@@ -1,74 +1,59 @@
-import React from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import Card from './Card'
+import { ServicesContext } from '../../contexts/Services'
+import Constants from '../../utils/Constants'
+import Tab from './Tab'
 
 const CardList = () => {
+    const { Services, contract } = useContext(ServicesContext)
+    const [activeCategory, setActiveCategory] = useState("All")
+    const [filteredPapers, setFilteredPapers] = useState([])
+
+    const onTabChange = () => {
+
+    }
+
+    const fetchFilteredPapers = async () => {
+        let res
+        if (activeCategory === "All")
+            res = await Services.getAllPublishedPapers()
+        else
+            res = await Services.getFilteredPublishedPapers(activeCategory)
+        // console.log(res)
+        if (contract.PaperFi !== null)
+            setFilteredPapers(res)
+    }
+
+    useEffect(() => {
+        fetchFilteredPapers()
+    }, [activeCategory, contract.PaperFi])
+
     return (
         <div>
             <ul className="flex w-full m-auto mb-6 flex-wrap text-sm font-medium text-center text-gray-500 dark:text-gray-400">
-                {/* inactive */}
-                <li className="mr-2">
-                    <div className="inline-block cursor-pointer py-3 px-4 text-white bg-blue-600 rounded-lg active" aria-current="page">Tab 1</div>
-                </li>
-                {/* active  */}
-                <li className="mr-2">
-                    <div className="inline-block cursor-pointer py-3 px-4 rounded-lg hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-white">Tab 2</div>
-                </li>
+                {
+                    Constants.CATEGORIES.map((category) => (
+                        <li key={category} className="mr-2">
+                            <Tab onClick={onTabChange} category={category} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+                        </li>
+                    ))
+                }
             </ul>
             <div className='grid grid-cols-4 gap-6'>
-                <Card
-                    title="title"
-                    author="author"
-                    owner="owner"
-                    category="category"
-                    timestamp="Published on 12 Feb 2022"
-                    description="description"
-                    imageURL="https://images.unsplash.com/photo-1485796826113-174aa68fd81b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                />
-                <Card
-                    title="title"
-                    author="author"
-                    owner="owner"
-                    category="category"
-                    timestamp="Published on 12 Feb 2022"
-                    description="description"
-                    imageURL="https://images.unsplash.com/photo-1485796826113-174aa68fd81b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                />
-                <Card
-                    title="title"
-                    author="author"
-                    owner="owner"
-                    category="category"
-                    timestamp="Published on 12 Feb 2022"
-                    description="description"
-                    imageURL="https://images.unsplash.com/photo-1485796826113-174aa68fd81b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                />
-                <Card
-                    title="title"
-                    author="author"
-                    owner="owner"
-                    category="category"
-                    timestamp="Published on 12 Feb 2022"
-                    description="description"
-                    imageURL="https://images.unsplash.com/photo-1485796826113-174aa68fd81b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                />
-                <Card
-                    title="title"
-                    author="author"
-                    owner="owner"
-                    category="category"
-                    timestamp="Published on 12 Feb 2022"
-                    description="description"
-                    imageURL="https://images.unsplash.com/photo-1485796826113-174aa68fd81b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                />
-                <Card
-                    title="title"
-                    author="author"
-                    owner="owner"
-                    category="category"
-                    timestamp="Published on 12 Feb 2022"
-                    description="description"
-                    imageURL="https://images.unsplash.com/photo-1485796826113-174aa68fd81b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                />
+                {
+                    filteredPapers.map((paper) => (
+                        <Card
+                            key={paper.title}
+                            title={paper.title}
+                            author={paper.author}
+                            owner={paper.owner}
+                            requiredAmount={paper.requiredAmount}
+                            category={"paper.category"}
+                            timestamp={`Published on ${(new Date(paper.timestamp * 1000).toLocaleString()).slice(0, 9)}`}
+                            imageURL={`https://ipfs.io/ipfs/${paper.imageURI}`}
+                        />
+                    ))
+                }
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import React, { Children, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import PaperfiFactory from '../artifacts/contracts/Paperfi.sol/PaperfiFactory.json'
 
 import { createContext, useState } from 'react'
@@ -13,16 +13,21 @@ const ServicesContextProvider = ({ children }) => {
     PaperFi: null
   })
 
-  useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    const signer = provider.getSigner()
+  const updateContract = (contractRef) => {
+    setContract({ PaperFi: contractRef })
+  }
 
+  useEffect(() => {
+    //get Contracts
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    const signer = provider.getSigner()
     const contractRef = new ethers.Contract(
       process.env.NEXT_PUBLIC_CONTRACT_ADDRESS,
       PaperfiFactory.abi,
       signer
     )
-    setContract({ PaperFi: contractRef })
+    updateContract(contractRef)
+    console.log(contractRef)
   }, [])
 
   const Services = {
@@ -35,9 +40,7 @@ const ServicesContextProvider = ({ children }) => {
           _imageURI,
           _pdfURI,
           _category,
-          desc, {
-          gasLimit: Constants.GASLIMIT
-        }
+          desc
         )
 
         await publishedPaper.wait()
@@ -49,32 +52,70 @@ const ServicesContextProvider = ({ children }) => {
 
     getAllPublishedPapers: async () => {
       try {
-        console.log(contract.PaperFi)
-        const publishedPapers = await contract.PaperFi.filters.paperPublished()
-        let events = await contract.PaperFi.queryFilter(publishedPapers)
-        let orderedEvents = events.reverse()
-        console.log(orderedEvents)
-        // let AllPublishedPapers = orderedEvents.map((e)=> {
-        //   title: e.args.title,
-        //   author,
-        //   requiredAmount,
-        //   owner,
-        //   ,
-        //   _imageURI,
-        //   _pdfURI,
-        //   block.timestamp,
-        //   _category
-        // })
+        // console.log(contract.PaperFi)
+        if (contract.PaperFi !== null) {
+          const publishedPapers = await contract.PaperFi.filters.paperPublished()
+          let events = await contract.PaperFi.queryFilter(publishedPapers)
+          let orderedEvents = events.reverse()
+          // console.log(orderedEvents)
+          let AllPublishedPapers = orderedEvents.map((e) => {
+            return {
+              title: e.args.title,
+              author: e.args.author,
+              requiredAmount: parseInt(e.args.requiredAmount),
+              owner: e.args.owner,
+              paperAddress: e.args.paperAddress,
+              imageURI: e.args.imageURI,
+              pdfURI: e.args.pdfURI,
+              timestamp: parseInt(e.args.timestamp),
+              category: e.args.category
+            }
+          })
+          console.log(orderedEvents)
+          return AllPublishedPapers
+        }
       }
       catch (err) {
         console.log("Error fetching published papers", err)
       }
-    }
+    },
+
+    getFilteredPublishedPapers: async (filterCategory) => {
+      try {
+        // console.log(contract.PaperFi)
+        if (contract.PaperFi !== null) {
+          const publishedPapers = await contract.PaperFi.filters.paperPublished(null, null, null, null, null, null, null, null, filterCategory)
+          let events = await contract.PaperFi.queryFilter(publishedPapers)
+          let orderedEvents = events.reverse()
+          // console.log(orderedEvents)
+          let filteredPublishedPapers = orderedEvents.map((e) => {
+            return {
+              title: e.args.title,
+              author: e.args.author,
+              requiredAmount: parseInt(e.args.requiredAmount),
+              owner: e.args.owner,
+              paperAddress: e.args.paperAddress,
+              imageURI: e.args.imageURI,
+              pdfURI: e.args.pdfURI,
+              timestamp: parseInt(e.args.timestamp),
+              category: e.args.category
+            }
+          })
+          console.log(filteredPublishedPapers)
+          return filteredPublishedPapers
+        }
+      }
+      catch (err) {
+        console.log("Error fetching published papers", err)
+      }
+    },
   }
 
   return (
     <ServicesContext.Provider
       value={{
+        contract,
+        updateContract,
         Services
       }}
     >
