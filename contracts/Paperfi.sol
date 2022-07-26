@@ -33,7 +33,8 @@ contract PaperfiFactory {
             _requiredAmount,
             _imageURI,
             _pdfURI,
-            _desc
+            _desc,
+            msg.sender
         );
 
         publishedPapers.push(address(newPaper));
@@ -78,7 +79,8 @@ contract Paperfi {
         uint256 _requiredAmount,
         string memory _imageURI,
         string memory _pdfURI,
-        string memory _desc
+        string memory _desc,
+        address paperOwner
     ) {
         title = _title;
         author = _author;
@@ -86,7 +88,7 @@ contract Paperfi {
         image = _imageURI;
         pdf = _pdfURI;
         description = _desc;
-        owner = payable(msg.sender);
+        owner = payable(paperOwner);
     }
 
     function donate() public payable {

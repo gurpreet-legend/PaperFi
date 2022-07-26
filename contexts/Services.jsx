@@ -33,10 +33,13 @@ const ServicesContextProvider = ({ children }) => {
   const Services = {
     publishPaper: async (_title, _author, _requiredAmount, _imageURI, _pdfURI, _category, _desc) => {
       try {
+        console.log({ _requiredAmount })
+
+        const parsedAmount = ethers.utils.parseEther(_requiredAmount.toString())
         const publishedPaper = await contract.PaperFi.publishPaper(
           _title,
           _author,
-          _requiredAmount,
+          parsedAmount,
           _imageURI,
           _pdfURI,
           _category,
@@ -68,7 +71,7 @@ const ServicesContextProvider = ({ children }) => {
             return {
               title: e.args.title,
               author: e.args.author,
-              requiredAmount: parseInt(e.args.requiredAmount),
+              requiredAmount: ethers.utils.formatEther((e.args.requiredAmount).toString()),
               owner: e.args.owner,
               paperAddress: e.args.paperAddress,
               imageURI: e.args.imageURI,
@@ -100,7 +103,7 @@ const ServicesContextProvider = ({ children }) => {
             return {
               title: e.args.title,
               author: e.args.author,
-              requiredAmount: parseInt(e.args.requiredAmount),
+              requiredAmount: ethers.utils.formatEther((e.args.requiredAmount).toString()),
               owner: e.args.owner,
               paperAddress: e.args.paperAddress,
               imageURI: e.args.imageURI,
