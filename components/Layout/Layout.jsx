@@ -5,7 +5,7 @@ import Head from 'next/head'
 
 const Layout = ({ children }) => {
     return (
-        <div className='dark:bg-slate-900 h-full'>
+        <div className='dark:bg-slate-900 h-screen'>
             <Head>
                 <title>PaperFi</title>
                 <meta name="description" content="One stop solution to get your papers funded" />

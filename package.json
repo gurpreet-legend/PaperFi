@@ -9,18 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@davatar/react": "^1.10.4",
     "@heroicons/react": "^1.0.6",
+    "@react-pdf-viewer/core": "^3.6.0",
     "dotenv": "^16.0.1",
     "ethers": "^5.6.9",
     "ipfs-http-client": "^57.0.3",
     "next": "12.2.2",
     "next-themes": "^0.2.0",
+    "pdfjs-dist": "^2.14.305",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-loader-spinner": "^5.1.5",
     "react-toastify": "^9.0.7"
   },
   "devDependencies": {
+    "@gradin/tailwindcss-scrollbar": "^2.0.4",
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "autoprefixer": "^10.4.7",
     "eslint": "8.20.0",
