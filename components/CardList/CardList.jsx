@@ -20,7 +20,7 @@ const CardList = () => {
         else
             res = await Services.getFilteredPublishedPapers(activeCategory)
         // console.log(res)
-        if (contract.PaperFi !== null)
+        if (contract.PaperFi !== null && contract.PaperFi !== undefined)
             setFilteredPapers(res)
     }
 
@@ -48,7 +48,7 @@ const CardList = () => {
                             author={paper.author}
                             owner={paper.owner}
                             requiredAmount={paper.requiredAmount}
-                            category={"paper.category"}
+                            category={paper.categoryName}
                             timestamp={`Published on ${(new Date(paper.timestamp * 1000).toLocaleString()).slice(0, 9)}`}
                             imageURL={`https://ipfs.io/ipfs/${paper.imageURI}`}
                         />

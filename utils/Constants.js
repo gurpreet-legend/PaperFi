@@ -6,7 +6,7 @@ const Constants = {
         "ML/AI",
         "Space",
         "Medical",
-        "Economcs",
+        "Economics",
         "WhitePaper"
     ]
 }

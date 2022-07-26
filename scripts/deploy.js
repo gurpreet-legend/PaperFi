@@ -1,5 +1,11 @@
+// const hre = require("hardhat")
+// require("@nomicfoundation/hardhat-toolbox")
+
 async function main() {
     const [deployer] = await ethers.getSigners();
+    // console.log({ ethers })
+    // console.log({ deployer })
+    // console.log("HERE!!!")
 
     console.log("Deploying contracts with the account:", deployer.address);
 

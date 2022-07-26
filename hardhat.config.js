@@ -14,12 +14,16 @@ task("accounts", "Print the list of accounts", async (taskArgs, hre) => {
 const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY
 module.exports = {
   solidity: "0.8.9",
-  defaultNetwork: "ganache",
+  defaultNetwork: "rinkeby",
   networks: {
-    hardhat: {},
-    ganache: {
-      url: process.env.NEXT_PUBLIC_RPC_URL,
-      account: [privateKey]
+    // hardhat: {},
+    // ganache: {
+    //   url: process.env.NEXT_PUBLIC_RPC_URL,
+    //   account: [privateKey]
+    // },
+    rinkeby: {
+      url: "https://rinkeby.infura.io/v3/9849f701c7a444438d864afccb7caafc",
+      accounts: [privateKey]
     }
   }
 };

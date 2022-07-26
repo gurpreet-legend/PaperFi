@@ -43,6 +43,10 @@ const ServicesContextProvider = ({ children }) => {
           desc
         )
 
+        // contract.PaperFi.on("paperPublished", () => {
+        //   console.log("PAPER HAS BEEN PUBLISHED !!!!")
+        // })
+
         await publishedPaper.wait()
         return publishedPaper.to
       } catch (err) {
@@ -52,10 +56,12 @@ const ServicesContextProvider = ({ children }) => {
 
     getAllPublishedPapers: async () => {
       try {
-        // console.log(contract.PaperFi)
         if (contract.PaperFi !== null) {
-          const publishedPapers = await contract.PaperFi.filters.paperPublished()
+          const publishedPapers = contract.PaperFi.filters.paperPublished()
+          // console.log({ publishedPapers })
           let events = await contract.PaperFi.queryFilter(publishedPapers)
+          // console.log({ events })
+          console.log("CONTRACT ADDRESS", contract.PaperFi.address)
           let orderedEvents = events.reverse()
           // console.log(orderedEvents)
           let AllPublishedPapers = orderedEvents.map((e) => {
@@ -68,10 +74,11 @@ const ServicesContextProvider = ({ children }) => {
               imageURI: e.args.imageURI,
               pdfURI: e.args.pdfURI,
               timestamp: parseInt(e.args.timestamp),
-              category: e.args.category
+              category: e.args.category,
+              categoryName: e.args.categoryName,
             }
           })
-          console.log(orderedEvents)
+          console.log(AllPublishedPapers)
           return AllPublishedPapers
         }
       }
@@ -82,10 +89,11 @@ const ServicesContextProvider = ({ children }) => {
 
     getFilteredPublishedPapers: async (filterCategory) => {
       try {
-        // console.log(contract.PaperFi)
         if (contract.PaperFi !== null) {
-          const publishedPapers = await contract.PaperFi.filters.paperPublished(null, null, null, null, null, null, null, null, filterCategory)
+          const publishedPapers = await contract.PaperFi.filters.paperPublished(null, null, null, null, null, null, null, null, filterCategory, null)
+          // console.log({ "filteredpublishedPapers": publishedPapers })
           let events = await contract.PaperFi.queryFilter(publishedPapers)
+          // console.log({ "filteredEvents": events })
           let orderedEvents = events.reverse()
           // console.log(orderedEvents)
           let filteredPublishedPapers = orderedEvents.map((e) => {
@@ -98,7 +106,8 @@ const ServicesContextProvider = ({ children }) => {
               imageURI: e.args.imageURI,
               pdfURI: e.args.pdfURI,
               timestamp: parseInt(e.args.timestamp),
-              category: e.args.category
+              category: e.args.category,
+              categoryName: e.args.categoryName,
             }
           })
           console.log(filteredPublishedPapers)
