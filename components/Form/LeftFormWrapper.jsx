@@ -56,7 +56,7 @@ const LeftFormWrapper = () => {
         }
         setUploadLoading(false)
         setUploaded(true)
-        toast.success("Files uploaded successfully")
+        toast("Files uploaded successfully")
     }
 
     return (

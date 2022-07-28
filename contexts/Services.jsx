@@ -1,7 +1,8 @@
 import { ethers } from 'ethers'
 import React, { useEffect } from 'react'
 import PaperfiFactory from '../artifacts/contracts/Paperfi.sol/PaperfiFactory.json'
-
+import PaperfiContract from '../artifacts/contracts/Paperfi.sol/Paperfi.json'
+import { toast } from 'react-toastify'
 import { createContext, useState } from 'react'
 import Constants from '../utils/Constants'
 
@@ -121,7 +122,98 @@ const ServicesContextProvider = ({ children }) => {
         console.log("Error fetching published papers", err)
       }
     },
+
+    getPaperData: async (paperAddress) => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider(
+          process.env.NEXT_PUBLIC_RPC_URL
+        )
+        console.log({ provider })
+        console.log({ PaperfiContract })
+        const paperContract = new ethers.Contract(
+          paperAddress,
+          PaperfiContract.abi,
+          provider
+        )
+
+        // console.log({ paperContract })
+        const title = await paperContract.title()
+        const author = await paperContract.author()
+        const requiredAmount = await paperContract.requiredAmount()
+        const image = await paperContract.image()
+        const pdf = await paperContract.pdf()
+        const description = await paperContract.description()
+        const owner = await paperContract.owner()
+        const recievedAmount = await paperContract.recievedAmount()
+
+        const paperData = {
+          paperAddress,
+          title,
+          author,
+          requiredAmount: ethers.utils.formatEther(requiredAmount.toString()),
+          image,
+          pdf,
+          description,
+          owner,
+          recievedAmount: ethers.utils.formatEther(recievedAmount.toString())
+        }
+        // console.log({ paperData })
+        return paperData
+      }
+      catch (err) {
+        console.log("Error while fetching paper details", err)
+      }
+    },
+
+    getDonations: async (paperAddress) => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider(
+          process.env.NEXT_PUBLIC_RPC_URL
+        )
+        const paperContract = new ethers.Contract(
+          paperAddress,
+          PaperfiContract.abi,
+          provider
+        )
+
+        const Donations = await paperContract.filters.donated()
+        const AllDonations = await paperContract.queryFilter(Donations)
+
+        const DonationData = AllDonations.map((e) => {
+          return {
+            donar: e.args.donar,
+            amount: ethers.utils.formatEther((e.args.amount).toString()),
+            timestamp: parseInt(e.args.timestamp)
+          }
+        })
+        console.log({ DonationData })
+        return DonationData
+      }
+      catch (err) {
+        console.log("Error while fetching donations", err)
+      }
+    },
+
+    donateFunds: async (paperAddress, amount) => {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(paperAddress, PaperfiContract.abi, signer);
+
+        const transaction = await contract.donate({ value: ethers.utils.parseEther(amount) });
+        await transaction.wait();
+        toast("Funds transfered successfully")
+
+      } catch (err) {
+        console.log("Error while sending donation", err);
+        toast.error("Error while sending funds")
+      }
+
+    }
   }
+
 
   return (
     <ServicesContext.Provider

@@ -3,15 +3,13 @@ import Card from './Card'
 import { ServicesContext } from '../../contexts/Services'
 import Constants from '../../utils/Constants'
 import Tab from './Tab'
+import Link from 'next/link'
+
 
 const CardList = () => {
     const { Services, contract } = useContext(ServicesContext)
     const [activeCategory, setActiveCategory] = useState("All")
     const [filteredPapers, setFilteredPapers] = useState([])
-
-    const onTabChange = () => {
-
-    }
 
     const fetchFilteredPapers = async () => {
         let res
@@ -34,7 +32,7 @@ const CardList = () => {
                 {
                     Constants.CATEGORIES.map((category) => (
                         <li key={category} className="mr-2">
-                            <Tab onClick={onTabChange} category={category} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+                            <Tab category={category} activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
                         </li>
                     ))
                 }
@@ -44,6 +42,7 @@ const CardList = () => {
                     filteredPapers.map((paper) => (
                         <Card
                             key={paper.title}
+                            paperAddress={paper.paperAddress}
                             title={paper.title}
                             author={paper.author}
                             owner={paper.owner}
@@ -52,6 +51,7 @@ const CardList = () => {
                             timestamp={`Published on ${(new Date(paper.timestamp * 1000).toLocaleString()).slice(0, 9)}`}
                             imageURL={`https://ipfs.io/ipfs/${paper.imageURI}`}
                         />
+
                     ))
                 }
             </div>

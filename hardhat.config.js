@@ -22,7 +22,7 @@ module.exports = {
     //   account: [privateKey]
     // },
     rinkeby: {
-      url: "https://rinkeby.infura.io/v3/9849f701c7a444438d864afccb7caafc",
+      url: PROCESS.ENV.NEXT_PUBLIC_RPC_URL,
       accounts: [privateKey]
     }
   }

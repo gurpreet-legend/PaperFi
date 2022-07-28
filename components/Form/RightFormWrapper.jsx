@@ -64,7 +64,7 @@ const RightFormWrapper = () => {
         }
         setPublishLoading(false)
         setPublished(true)
-        toast.success("Files published successfully")
+        toast("Files published successfully")
         setOpenModal(true)
     }
 

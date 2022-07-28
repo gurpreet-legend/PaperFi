@@ -2,12 +2,12 @@ import React from 'react'
 import { Worker, Viewer } from '@react-pdf-viewer/core';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 
-const LeftPaperDetail = () => {
+const LeftPaperDetail = ({ pdf }) => {
     return (
         <div className=''>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
                 <div className='h-[85vh]'>
-                    <Viewer fileUrl="/Gurpreet Singh Resume.pdf" />;
+                    <Viewer fileUrl={`https://ipfs.io/ipfs/${pdf}`} />;
                 </div>
             </Worker>
 
