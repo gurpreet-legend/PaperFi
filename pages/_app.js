@@ -6,6 +6,7 @@ import IpfsContextProvider from '../contexts/IpfsContext'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ServicesContextProvider from '../contexts/Services'
+import SearchFilterProvider from '../contexts/SearchFilter'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -13,10 +14,12 @@ function MyApp({ Component, pageProps }) {
       <ServicesContextProvider>
         <FormContextProvider>
           <IpfsContextProvider>
-            <ToastContainer theme='light' />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <SearchFilterProvider>
+              <ToastContainer theme='light' />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </SearchFilterProvider>
           </IpfsContextProvider>
         </FormContextProvider>
       </ServicesContextProvider>

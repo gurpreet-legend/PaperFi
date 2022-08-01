@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import classNames from '../../utils/classNames'
 import { MoonIcon, SunIcon } from '@heroicons/react/solid'
 import { useTheme } from "next-themes"
 import Wallet from '../Wallet/Wallet'
+import { SearchFilterContext } from '../../contexts/SearchFilter'
 
 const navigations = [
     {
@@ -19,6 +20,7 @@ const navigations = [
 
 
 const Navbar = () => {
+    const { searchText, updateSearchText } = useContext(SearchFilterContext)
 
     const [mounted, setMounted] = useState(false)
     const { setTheme, theme } = useTheme()
@@ -36,9 +38,10 @@ const Navbar = () => {
         toggleEl.current.checked == false ? setTheme('dark') : setTheme('light')
     }
 
-    // const searchPapers = (e) => {
-
-    // }
+    const searchPapers = (e) => {
+        updateSearchText(e.target.value)
+        console.log({ searchText })
+    }
 
     return (
         <div>
@@ -52,7 +55,7 @@ const Navbar = () => {
                         </div>
                     </Link>
                     {/* Search  */}
-                    {/* <div className="flex ">
+                    <div className="flex ">
                         <div className="hidden relative md:block">
                             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                 <svg className="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
@@ -60,7 +63,7 @@ const Navbar = () => {
                             </div>
                             <input onChange={searchPapers} type="text" id="search-navbar" className="block outline-none p-2 pl-10 w-[40vw] text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." />
                         </div>
-                    </div> */}
+                    </div>
                     <div className="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="navbar-search">
                         {/* <div className="relative mt-3 md:hidden w-full">
                             <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
