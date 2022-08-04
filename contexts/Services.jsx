@@ -32,19 +32,22 @@ const ServicesContextProvider = ({ children }) => {
   }, [])
 
   const Services = {
-    publishPaper: async (_title, _author, _requiredAmount, _imageURI, _pdfURI, _category, _desc) => {
+    publishPaper: async (_title, _author, _requiredAmount, _imageURI, _pdfURI, _assetURI, _category, _desc, _purchaseAmount) => {
       try {
         console.log({ _requiredAmount })
 
-        const parsedAmount = ethers.utils.parseEther(_requiredAmount.toString())
+        const _parsedFundAmount = ethers.utils.parseEther(_requiredAmount.toString())
+        const _parsedPurchaseAmount = ethers.utils.parseUnits(_purchaseAmount.toString(), "gwei")
         const publishedPaper = await contract.PaperFi.publishPaper(
           _title,
           _author,
-          parsedAmount,
+          _parsedFundAmount,
           _imageURI,
           _pdfURI,
+          _assetURI,
           _category,
-          desc
+          _desc,
+          _parsedPurchaseAmount
         )
 
         // contract.PaperFi.on("paperPublished", () => {
@@ -77,12 +80,14 @@ const ServicesContextProvider = ({ children }) => {
               paperAddress: e.args.paperAddress,
               imageURI: e.args.imageURI,
               pdfURI: e.args.pdfURI,
+              assetURI: e.args.assetURI,
               timestamp: parseInt(e.args.timestamp),
               category: e.args.category,
               categoryName: e.args.categoryName,
+              purchaseAmount: ethers.utils.formatUnits((e.args.purchaseAmount).toString(), "gwei"),
             }
           })
-          console.log(AllPublishedPapers)
+          console.log({ AllPublishedPapers })
           return AllPublishedPapers
         }
       }
@@ -94,7 +99,7 @@ const ServicesContextProvider = ({ children }) => {
     getFilteredPublishedPapers: async (filterCategory) => {
       try {
         if (contract.PaperFi !== null) {
-          const publishedPapers = await contract.PaperFi.filters.paperPublished(null, null, null, null, null, null, null, null, filterCategory, null)
+          const publishedPapers = await contract.PaperFi.filters.paperPublished(null, null, null, null, null, null, null, null, null, filterCategory, null, null)
           // console.log({ "filteredpublishedPapers": publishedPapers })
           let events = await contract.PaperFi.queryFilter(publishedPapers)
           // console.log({ "filteredEvents": events })
@@ -109,12 +114,14 @@ const ServicesContextProvider = ({ children }) => {
               paperAddress: e.args.paperAddress,
               imageURI: e.args.imageURI,
               pdfURI: e.args.pdfURI,
+              assetURI: e.args.assetURI,
               timestamp: parseInt(e.args.timestamp),
               category: e.args.category,
               categoryName: e.args.categoryName,
+              purchaseAmount: ethers.utils.formatUnits((e.args.purchaseAmount).toString(), "gwei"),
             }
           })
-          console.log(filteredPublishedPapers)
+          console.log({ filteredPublishedPapers })
           return filteredPublishedPapers
         }
       }
@@ -145,6 +152,7 @@ const ServicesContextProvider = ({ children }) => {
         const description = await paperContract.description()
         const owner = await paperContract.owner()
         const recievedAmount = await paperContract.recievedAmount()
+        const purchaseAmount = await paperContract.purchaseAmount()
 
         const paperData = {
           paperAddress,
@@ -155,13 +163,34 @@ const ServicesContextProvider = ({ children }) => {
           pdf,
           description,
           owner,
-          recievedAmount: ethers.utils.formatEther(recievedAmount.toString())
+          recievedAmount: ethers.utils.formatEther(recievedAmount.toString()),
+          purchaseAmount: ethers.utils.formatUnits(purchaseAmount.toString(), "gwei"),
         }
         // console.log({ paperData })
         return paperData
       }
       catch (err) {
         console.log("Error while fetching paper details", err)
+      }
+    },
+
+    getAssets: async (paperAddress) => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider(
+          process.env.NEXT_PUBLIC_RPC_URL
+        )
+        const paperContract = new ethers.Contract(
+          paperAddress,
+          PaperfiContract.abi,
+          provider
+        )
+
+        const assets = await paperContract.assets()
+        console.log({ assets })
+        return assets
+      }
+      catch (err) {
+        console.log("Error while fetching assets details", err)
       }
     },
 
@@ -211,7 +240,88 @@ const ServicesContextProvider = ({ children }) => {
         toast.error("Error while sending funds")
       }
 
-    }
+    },
+
+    purchaseAssets: async (paperAddress, amount) => {
+      try {
+        await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(paperAddress, PaperfiContract.abi, signer);
+
+        const transaction = await contract.purchase({ value: ethers.utils.parseUnits(amount.toString(), "gwei") });
+        await transaction.wait();
+        toast("Assets purchased successfully")
+
+      } catch (err) {
+        console.log("Error while puchasing assets", err);
+        toast.error("Error while puchasing assets")
+      }
+
+    },
+
+    getPurchases: async (paperAddress) => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider(
+          process.env.NEXT_PUBLIC_RPC_URL
+        )
+        const paperContract = new ethers.Contract(
+          paperAddress,
+          PaperfiContract.abi,
+          provider
+        )
+
+        const Purchases = await paperContract.filters.purchased()
+        const AllPurchases = await paperContract.queryFilter(Purchases)
+
+        const PurchaseData = AllPurchases.map((e) => {
+          return {
+            donar: e.args.donar,
+            amount: ethers.utils.formatEther((e.args.amount).toString()),
+            timestamp: parseInt(e.args.timestamp)
+          }
+        })
+        console.log({ PurchaseData })
+        return PurchaseData
+      }
+      catch (err) {
+        console.log("Error while fetching purchases", err)
+      }
+    },
+
+    isPurchased: async (paperAddress, ownerAddress) => {
+      try {
+        const provider = new ethers.providers.JsonRpcProvider(
+          process.env.NEXT_PUBLIC_RPC_URL
+        )
+        const paperContract = new ethers.Contract(
+          paperAddress,
+          PaperfiContract.abi,
+          provider
+        )
+
+        const Purchases = await paperContract.filters.purchased(ownerAddress, null, null)
+        const AllPurchases = await paperContract.queryFilter(Purchases)
+
+        const PurchaseData = AllPurchases.map((e) => {
+          return {
+            donar: e.args.donar,
+            amount: ethers.utils.formatEther((e.args.amount).toString()),
+            timestamp: parseInt(e.args.timestamp)
+          }
+        })
+        console.log({ "isPurchased": PurchaseData })
+        if (PurchaseData.length === 0)
+          return false
+        else
+          return true
+
+      }
+      catch (err) {
+        console.log("Error while fetching purchases", err)
+      }
+    },
   }
 
 

@@ -7,11 +7,13 @@ const PaperDetail = ({
     author,
     description,
     image,
+    assets,
     owner,
     paperAddress,
     pdf,
     recievedAmount,
     requiredAmount,
+    purchaseAmount,
     donations
 }) => {
     return (
@@ -22,10 +24,12 @@ const PaperDetail = ({
                 author={author}
                 description={description}
                 image={image}
+                assets={assets}
                 owner={owner}
                 paperAddress={paperAddress}
                 recievedAmount={recievedAmount}
                 requiredAmount={requiredAmount}
+                purchaseAmount={purchaseAmount}
                 donations={donations}
             />
         </div>

@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 const Card = ({ title, author, owner, category, timestamp, imageURL, requiredAmount, paperAddress }) => {
-    console.log({ paperAddress })
+    // console.log({ paperAddress })
     return (
         <Link passHref href={"/" + paperAddress} >
 

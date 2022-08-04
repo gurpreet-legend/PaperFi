@@ -7,11 +7,13 @@ const FormContextProvider = ({ children }) => {
     const [formData, setFormData] = useState({
         title: "",
         author: "",
+        purchaseAmount: "",
         description: "",
         requiredAmount: "",
         category: "",
         thumbnail: null,
-        pdfFile: null
+        pdfFile: null,
+        assetFile: null,
     })
 
     const imageHandler = (e) => {
@@ -21,10 +23,17 @@ const FormContextProvider = ({ children }) => {
         })
     }
 
-    const fileHandler = (e) => {
+    const paperHandler = (e) => {
         setFormData({
             ...formData,
             pdfFile: e.target.files[0]
+        })
+    }
+
+    const assetHandler = (e) => {
+        setFormData({
+            ...formData,
+            assetFile: e.target.files[0]
         })
     }
 
@@ -47,7 +56,8 @@ const FormContextProvider = ({ children }) => {
             value={{
                 ...formData,
                 updateFormData,
-                fileHandler,
+                paperHandler,
+                assetHandler,
                 imageHandler,
                 inputHandler
             }}

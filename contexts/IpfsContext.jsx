@@ -7,7 +7,8 @@ const IpfsContextProvider = ({ children }) => {
 
     const [ipfsData, setIpfsData] = useState({
         thumbnailURL: "",
-        pdfFileURL: ""
+        pdfFileURL: "",
+        assetFileURL: ""
     })
 
     const updateIpfsData = (data) => {

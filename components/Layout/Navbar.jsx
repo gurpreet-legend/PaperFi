@@ -15,7 +15,7 @@ const navigations = [
     {
         tag: 'Publish',
         href: '/publish'
-    },
+    }
 ]
 
 
