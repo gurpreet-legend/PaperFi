@@ -1,34 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# PaperFi: A Platform for Decentralized Crowdfunding and Asset Acquisition of Research Papers
 
-## Getting Started
+In order to address some of the issues with the present system of fundraising and asset acquisition associated with research activities this project aims to develop a decentralised and secure crowdfunding and asset management platform utilising DLTs (particularly employing blockchain technology)
 
-First, run the development server:
+![GitHub last commit](https://img.shields.io/github/last-commit/gurpreet-legend/golang-url-shortener?style=for-the-badge)&nbsp;
+![GitHub issues](https://img.shields.io/github/issues/gurpreet-legend/golang-url-shortener?style=for-the-badge)&nbsp;
+![GitHub repo size](https://img.shields.io/github/repo-size/gurpreet-legend/golang-url-shortener?style=for-the-badge)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Tech-Stack 👩‍💻
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<a href="https://go.dev/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" width="60px" height="60px"/> </a>&nbsp;
+<a href="https://gofiber.io/" target="_blank"> <img src="https://gofiber.io/assets/images/logo.svg" width="80px" height="80px"/> </a>&nbsp;
+<a href="https://redis.io/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" width="60px" height="60px"/> </a>&nbsp;
+<a href="https://www.docker.com/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="70px" height="70px"/> </a>&nbsp;
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Features ✨
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+:white_check_mark: &nbsp;Users can create custom shorten URL
 
-## Learn More
+:white_check_mark: &nbsp;Rate limiter to restrict users to exploit the API
 
-To learn more about Next.js, take a look at the following resources:
+:white_check_mark: &nbsp;Containerized the whole application using Docker and Docker-compose for easy set-up
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+:white_check_mark: &nbsp;Suitable checks for non-redundancy in URL creation 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Project Setup ⚙
+- Clone the repository using `git clone <repo_url>`
+- Go to the project directory using `cd golang-url-shortener`
+- Install docker and docker-compose on windows, follow these [instructions](https://docs.docker.com/desktop/install/windows-install/) for easy setup.
+- Create a `.env` file in `/api/` folder similar to `.env.example` file. 
+- Run `docker-compose up -d` to spin the docker containers for Go-Fiber server and Redis database at ports `localhost:3000` and `localhost:6379` respectively.
+- You can test the API using [postman](https://www.postman.com/) or VSCode's [thunder client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) using following api call:
+  - **POST** request at `localhost:3000/api/v1` with body:
+  ```json
+  {
+    "url" : "URL_TO_BE_SHORTEN",
+    "custom" : "UNIQUE_CUSTOM_URL_ID"
+  }
+  ```
+  which will respond you with a response format:
+  ```json
+  {
+     "url":                "URL_TO_BE_SHORTEN",
+     "short":              "SHORTEN_URL",
+	 "expiry":             "Cache expiry {set to 30 mins}",
+	 "rate_limit":         "No of times the API have been called", 
+	 "rate_limit_reset":   "After how much time the rate limit will reset (in hours)",
+  }
+  ```
+  
+  - **GET** request at `localhost:3000/:URL_TO_BE_SHORTEN` will redirect to the original URL.
