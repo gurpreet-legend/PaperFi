@@ -56,8 +56,21 @@
 :white_check_mark: &nbsp;Other users or researchers can also purchase the assets offered by research paper owners.
 
 ## Project Setup ⚙
+- **Prerequisites:**
+    - Install Metamask extension on chrome and create an account
+    - Get rinkeby testnet ethereum from the [faucet link](https://faucets.chain.link/)
 - Clone the repository using `git clone <repo_url>`
 - Go to the project directory using `PaperFi`
+- Run `npm install` inside the root folder of the project.
+- For testnet setup, create an `.env` file at the root folder with the following structure:
+    ```
+    NEXT_PUBLIC_RPC_URL="Add a valid rindekby RPC URL"
+    NEXT_PUBLIC_PRIVATE_KEY="Add the private key of your wallet account"
+    NEXT_PUBLIC_CONTRACT_ADDRESS="Add contract address here after deploying the smart contracts"
+    ```
+- Run `npx hardhat scripts/deploy.js` in the terminal
+- After getting the deployed contract address update it in the `.env` file
+- To run the local instance of frontend run `npm run dev`
   
 ## For further reading
 [🔗 Project Report](https://www.overleaf.com/read/yhgmwsdfxfnq)
