@@ -1,52 +1,63 @@
-# PaperFi: A Platform for Decentralized Crowdfunding and Asset Acquisition of Research Papers
+<p align="center">
+    <img alt="Fiber" height="125" src="https://user-images.githubusercontent.com/75157493/220345562-509f8556-16f4-49ae-9e77-163032dc57b7.png">
+</p>
 
-In order to address some of the issues with the present system of fundraising and asset acquisition associated with research activities this project aims to develop a decentralised and secure crowdfunding and asset management platform utilising DLTs (particularly employing blockchain technology)
+<h1 align="center"> PaperFi </h1>
 
-![GitHub last commit](https://img.shields.io/github/last-commit/gurpreet-legend/golang-url-shortener?style=for-the-badge)&nbsp;
-![GitHub issues](https://img.shields.io/github/issues/gurpreet-legend/golang-url-shortener?style=for-the-badge)&nbsp;
-![GitHub repo size](https://img.shields.io/github/repo-size/gurpreet-legend/golang-url-shortener?style=for-the-badge)
+<h2 align="center"> A Platform for Decentralized Crowdfunding and Asset Acquisition of Research Papers </h2>
+
+<p align="center">In order to address some of the issues with the present system of fundraising and asset acquisition associated with research activities this project aims to develop a decentralised and secure crowdfunding and asset management platform utilising **DLTs** (particularly employing blockchain technology) </p>
+<div align="center">
+<img src="https://img.shields.io/github/last-commit/gurpreet-legend/PaperFi?style=for-the-badge" />&nbsp;
+<img src="https://img.shields.io/github/issues/gurpreet-legend/PaperFi?style=for-the-badge" />&nbsp;
+<img src="https://img.shields.io/github/repo-size/gurpreet-legend/PaperFi?style=for-the-badge" />
+</div>
 
 ## Tech-Stack 👩‍💻
 
-<a href="https://go.dev/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" width="60px" height="60px"/> </a>&nbsp;
-<a href="https://gofiber.io/" target="_blank"> <img src="https://gofiber.io/assets/images/logo.svg" width="80px" height="80px"/> </a>&nbsp;
-<a href="https://redis.io/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" width="60px" height="60px"/> </a>&nbsp;
-<a href="https://www.docker.com/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="70px" height="70px"/> </a>&nbsp;
+<a href="https://hardhat.org/" target="_blank"> <img src="https://hardhat.org/_next/static/media/hardhat-logo-dark.484eb916.svg" height="40px"/> </a>&nbsp;
+<a href="https://docs.ethers.org/v5/" target="_blank"> <img src="https://seeklogo.com/images/E/ethers-logo-D5B86204D8-seeklogo.com.png" height="50px"/> </a>&nbsp;
+<a href="https://nextjs.org/" target="_blank"> <img src="https://camo.githubusercontent.com/92ec9eb7eeab7db4f5919e3205918918c42e6772562afb4112a2909c1aaaa875/68747470733a2f2f6173736574732e76657263656c2e636f6d2f696d6167652f75706c6f61642f76313630373535343338352f7265706f7369746f726965732f6e6578742d6a732f6e6578742d6c6f676f2e706e67" width="60px" height="60px"/> </a>&nbsp;
+<a href="https://tailwindcss.com/" target="_blank"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" width="70px" height="70px"/> </a>&nbsp;
+<a href="https://soliditylang.org/" target="_blank"> <img src="https://img.icons8.com/ios/256/solidity.png" width="50px" height="50px" style="background: white;"/> </a>&nbsp;
+
+## Project Screenshots 👀
+#### Homepage:
+![homepage](https://user-images.githubusercontent.com/75157493/220353471-c4147c7e-9b3b-4d74-99d8-4973517af096.png)
+#### Homepage (Light mode):
+![homepage_light](https://user-images.githubusercontent.com/75157493/220353536-5224e514-b744-4429-a712-a1a2f21b18e5.png)
+#### Publish Page:
+![publish_page](https://user-images.githubusercontent.com/75157493/220353850-1b7c12b9-fa34-40d8-8490-3517e2268af3.png)
+#### Details Page:
+![details_page](https://user-images.githubusercontent.com/75157493/220353973-28c7f8a4-f33e-4396-bcba-cd12bdf48f66.png)
+
+
+## Project Architecture 🏗
+<p align="center">
+<img src="https://user-images.githubusercontent.com/75157493/220349446-ecaac0c9-57fb-4e70-b1a6-36ee6119df42.png"/>
+</p>
+
+- Hardhat Cconfigurations
+- Accessing Blockchain Node using Infura
+- Testnet Integration
+- Ethers.js setup
 
 
 ## Features ✨
 
-:white_check_mark: &nbsp;Users can create custom shorten URL
+:white_check_mark: &nbsp;Researchers can publish their research papers along with their metadata and assets.
 
-:white_check_mark: &nbsp;Rate limiter to restrict users to exploit the API
+:white_check_mark: &nbsp;Researchers can also set a bar on the funding needed by the research.
 
-:white_check_mark: &nbsp;Containerized the whole application using Docker and Docker-compose for easy set-up
+:white_check_mark: &nbsp;Other researchers or readers can access the research paper and can study their research.
 
-:white_check_mark: &nbsp;Suitable checks for non-redundancy in URL creation 
+:white_check_mark: &nbsp;They can also fund the research using on-chain transactions with ethereum.
+
+:white_check_mark: &nbsp;Other users or researchers can also purchase the assets offered by research paper owners.
 
 ## Project Setup ⚙
 - Clone the repository using `git clone <repo_url>`
-- Go to the project directory using `cd golang-url-shortener`
-- Install docker and docker-compose on windows, follow these [instructions](https://docs.docker.com/desktop/install/windows-install/) for easy setup.
-- Create a `.env` file in `/api/` folder similar to `.env.example` file. 
-- Run `docker-compose up -d` to spin the docker containers for Go-Fiber server and Redis database at ports `localhost:3000` and `localhost:6379` respectively.
-- You can test the API using [postman](https://www.postman.com/) or VSCode's [thunder client](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client) using following api call:
-  - **POST** request at `localhost:3000/api/v1` with body:
-  ```json
-  {
-    "url" : "URL_TO_BE_SHORTEN",
-    "custom" : "UNIQUE_CUSTOM_URL_ID"
-  }
-  ```
-  which will respond you with a response format:
-  ```json
-  {
-     "url":                "URL_TO_BE_SHORTEN",
-     "short":              "SHORTEN_URL",
-	 "expiry":             "Cache expiry {set to 30 mins}",
-	 "rate_limit":         "No of times the API have been called", 
-	 "rate_limit_reset":   "After how much time the rate limit will reset (in hours)",
-  }
-  ```
+- Go to the project directory using `PaperFi`
   
-  - **GET** request at `localhost:3000/:URL_TO_BE_SHORTEN` will redirect to the original URL.
+## For further reading
+[🔗 Project Report](https://www.overleaf.com/read/yhgmwsdfxfnq)
