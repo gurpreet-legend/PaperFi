@@ -63,11 +63,12 @@
 - Go to the project directory using `PaperFi`
 - Run `npm install` inside the root folder of the project.
 - For testnet setup, create an `.env` file at the root folder with the following structure:
-    ```
-    NEXT_PUBLIC_RPC_URL="Add a valid rindekby RPC URL"
-    NEXT_PUBLIC_PRIVATE_KEY="Add the private key of your wallet account"
-    NEXT_PUBLIC_CONTRACT_ADDRESS="Add contract address here after deploying the smart contracts"
-    ```
+
+```
+NEXT_PUBLIC_RPC_URL="Add a valid rindekby RPC URL"
+NEXT_PUBLIC_PRIVATE_KEY="Add the private key of your wallet account"
+NEXT_PUBLIC_CONTRACT_ADDRESS="Add contract address here after deploying the smart contracts"
+```
 - Run `npx hardhat scripts/deploy.js` in the terminal
 - After getting the deployed contract address update it in the `.env` file
 - To run the local instance of frontend run `npm run dev`
