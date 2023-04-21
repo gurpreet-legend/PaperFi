@@ -14,6 +14,8 @@ async function main() {
     const PaperfiFactoryContract = await ethers.getContractFactory("PaperfiFactory");
     const paperfiFactory = await PaperfiFactoryContract.deploy();
 
+    console.log(`Deploying PaperfiFactory Contract ....`);
+    await paperfiFactory.deployed({value: hre.ethers.utils.parseEther("0.07")});
     console.log("PaperfiFactory address:", paperfiFactory.address);
 }
 

@@ -2,15 +2,37 @@ import React, { useState } from 'react'
 import { FormContext } from '../../contexts/FormContext'
 import { useContext } from 'react'
 import { TailSpin } from 'react-loader-spinner'
-import { create } from 'ipfs-http-client'
+import * as IPFS from 'ipfs-core'
+import {create} from 'ipfs-http-client'
 import { IpfsContext } from '../../contexts/IpfsContext'
 import { toast } from 'react-toastify'
 import PublishedModal from '../Modals/PublishedModal'
 
 const LeftFormWrapper = () => {
+    // const [ipfs, setIpfs] = useState()
 
+    // const func = async () => {
+    //     if (ipfs)
+    //         return;
+    //     // let _ipfs = await IPFS.create({ repo: 'ok' + Math.random() })
+    const ipfs = create({ url: "http://127.0.0.1:5001/api/v0" })
+    console.log({ipfs})
+        // setIpfs(_ipfs)
+    // }
+    // React.useEffect(() => {
+    //     func()
+    // }, [])
 
-    const ipfs = create("https://ipfs.infura.io:5001/api/v0")
+    // const auth = 'Basic ' + Buffer.from('PaperFi' + ':' + 'ee2cf9dec6724ec899e4ee999f92f8a2').toString('base64');
+    // const ipfs = create({
+    //     host: 'ipfs.infura.io',
+    //     port: 5001,
+    //     protocol: 'https',
+    //     headers: {
+    //         authorization: auth,
+    //     },
+    // });
+    // const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https', apiPath: '/api/v0' })
 
     const { thumbnail, pdfFile, assetFile, paperHandler, imageHandler, assetHandler } = useContext(FormContext)
 
@@ -62,6 +84,7 @@ const LeftFormWrapper = () => {
                 setUploadLoading(false)
                 return
             }
+            console.log(thumbnailRes, pdfFileRes, assetFileRes)
             updateIpfsData({ thumbnailURL: thumbnailRes.path, pdfFileURL: pdfFileRes.path, assetFileURL: assetFileRes.path })
         }
         setUploadLoading(false)

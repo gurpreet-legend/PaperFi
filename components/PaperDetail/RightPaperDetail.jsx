@@ -46,17 +46,17 @@ const RightPaperDetail = ({
         const signer = await provider.getSigner();
         const currWalletAddress = await signer.getAddress()
         const isPurchased = await Services.isPurchased(paperAddress, currWalletAddress)
-        // console.log("RES", isPurchased)
         if (isPurchased === true || currWalletAddress === owner) {
-            setPurchased(true)
             await getAssets()
+            setPurchased(isPurchased)
         } else if (currWalletAddress !== owner) {
-            setPurchased(false)
+            setPurchased(isPurchased)
         }
     }
     useEffect(() => {
         // fetchCurrWalletAddress()
         checkPurchased()
+        // getAssets()
     }, [])
 
     const fundTransfer = async () => {
@@ -81,7 +81,6 @@ const RightPaperDetail = ({
 
     const purchaseAssets = async () => {
         setPurchaseLoader(true)
-        setPurchased(false)
         await window.ethereum.request({ method: 'eth_requestAccounts' });
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = await provider.getSigner();
@@ -92,7 +91,8 @@ const RightPaperDetail = ({
         }
         try {
             await Services.purchaseAssets(paperAddress, purchaseAmount)
-            getAssets()
+            await getAssets()
+            setPurchased(true)
         }
         catch (err) {
             toast.warn("Error while purchasing assets")
@@ -134,7 +134,7 @@ const RightPaperDetail = ({
                             />
                         </button> :
                         purchased === true && assets !== "" ?
-                            <a href={`https://ipfs.io/ipfs/${assets}`} target="_blank">
+                            <a href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY}/ipfs/${assets}`} target="_blank">
                                 <div className='flex flex-row justify-center cursor-pointer items-center bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-2xl p-2 text-white'>
                                     <span className='mr-2'>Assets already purchased</span>
                                     <ExternalLinkIcon className='h-6 w-6' />

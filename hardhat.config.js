@@ -14,7 +14,7 @@ task("accounts", "Print the list of accounts", async (taskArgs, hre) => {
 const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY
 module.exports = {
   solidity: "0.8.9",
-  defaultNetwork: "rinkeby",
+  defaultNetwork: "sepolia",
   networks: {
     // hardhat: {},
     // ganache: {
@@ -24,6 +24,18 @@ module.exports = {
     rinkeby: {
       url: process.env.NEXT_PUBLIC_RPC_URL,
       accounts: [privateKey]
+    },
+    goerli: {
+      url: process.env.NEXT_PUBLIC_RPC_URL,
+      accounts: [privateKey],
+    },
+    polygon: {
+      url: process.env.NEXT_PUBLIC_RPC_URL,
+      accounts: [privateKey],
+    },
+    sepolia: {
+      url: process.env.NEXT_PUBLIC_RPC_URL,
+      accounts: [privateKey],
     }
   }
 };

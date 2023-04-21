@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['ipfs.infura.io', 'th.bing.com', 'images.unsplash.com']
+    domains: ['ipfs.infura.io', 'th.bing.com', 'images.unsplash.com', 'ipfs.io']
   },
   async rewrites() {
     return [

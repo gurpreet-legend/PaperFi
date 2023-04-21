@@ -55,7 +55,7 @@ const CardList = () => {
                                 requiredAmount={paper.requiredAmount}
                                 category={paper.categoryName}
                                 timestamp={`Published on ${(new Date(paper.timestamp * 1000).toLocaleString()).slice(0, 9)}`}
-                                imageURL={`https://ipfs.io/ipfs/${paper.imageURI}`}
+                                imageURL={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY}/ipfs/${paper.imageURI}`}
                             />
 
                         )) :
@@ -74,7 +74,7 @@ const CardList = () => {
                                 requiredAmount={paper.requiredAmount}
                                 category={paper.categoryName}
                                 timestamp={`Published on ${(new Date(paper.timestamp * 1000).toLocaleString()).slice(0, 9)}`}
-                                imageURL={`https://ipfs.io/ipfs/${paper.imageURI}`}
+                                imageURL={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY}/ipfs/${paper.imageURI}`}
                             />
                         ))
                 }
