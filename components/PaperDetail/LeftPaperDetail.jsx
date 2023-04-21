@@ -7,7 +7,7 @@ const LeftPaperDetail = ({ pdf }) => {
         <div className=''>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.14.305/build/pdf.worker.min.js">
                 <div className='h-[85vh]'>
-                    <Viewer fileUrl={`http://ipfs.io/ipfs/${pdf}`} />;
+                    <Viewer fileUrl={`https://ipfs.io/ipfs/${pdf}`} />;
                 </div>
             </Worker>
 
