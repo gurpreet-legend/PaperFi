@@ -134,7 +134,7 @@ const RightPaperDetail = ({
                             />
                         </button> :
                         purchased === true && assets !== "" ?
-                            <a href={`${process.env.NEXT_PUBLIC_IPFS_GATEWAY}/ipfs/${assets}`} target="_blank">
+                            <a href={`https://ipfs.io/ipfs/${assets}`} target="_blank">
                                 <div className='flex flex-row justify-center cursor-pointer items-center bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 rounded-2xl p-2 text-white'>
                                     <span className='mr-2'>Assets already purchased</span>
                                     <ExternalLinkIcon className='h-6 w-6' />
