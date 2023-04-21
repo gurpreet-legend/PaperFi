@@ -8,8 +8,8 @@ import { TailSpin } from 'react-loader-spinner'
 
 const detail = ({ query }) => {
     // console.log(props)
-    // const router = useRouter()
-    let param = query.address
+    const router = useRouter()
+    let param = router.query.address
     const { Services } = useContext(ServicesContext)
     const [paperData, setPaperData] = useState({})
 
@@ -90,9 +90,9 @@ const detail = ({ query }) => {
 //     }
 // }
 
-export const getServerSideProps = async (context) => {
-    const { query } = context
-    return { props: { query } };
-}
+// export const getServerSideProps = async (context) => {
+//     const { query } = context
+//     return { props: { query } };
+// }
 
 export default detail
