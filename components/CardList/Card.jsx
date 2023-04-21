@@ -4,7 +4,7 @@ import Link from 'next/link'
 const Card = ({ title, author, owner, category, timestamp, imageURL, requiredAmount, paperAddress }) => {
     // console.log({ paperAddress })
     return (
-        <Link passHref href={"/" + paperAddress} >
+        <Link passHref href={"/address/" + paperAddress} >
 
             <div className="cursor-pointer max-w-sm shadow-2xl shadow-gray-500 dark:shadow-blue-500 bg-white rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <div className='max-h-56 overflow-hidden'>

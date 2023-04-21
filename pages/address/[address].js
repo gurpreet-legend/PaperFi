@@ -1,9 +1,9 @@
 import React, { useEffect, useContext, useState } from 'react'
-import PaperDetail from '../components/PaperDetail/PaperDetail'
+import PaperDetail from '../../components/PaperDetail/PaperDetail'
 import { ethers } from 'ethers'
-import PaperfiFactory from '../artifacts/contracts/Paperfi.sol/PaperfiFactory.json'
+import PaperfiFactory from '../../artifacts/contracts/Paperfi.sol/PaperfiFactory.json'
 import { useRouter } from 'next/router'
-import { ServicesContext } from '../contexts/Services'
+import { ServicesContext } from '../../contexts/Services'
 import { TailSpin } from 'react-loader-spinner'
 
 const detail = ({ query }) => {
