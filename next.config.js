@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  exportTrailingSlash: true,
   images: {
     domains: ['ipfs.infura.io', 'th.bing.com', 'images.unsplash.com', 'ipfs.io']
   },
